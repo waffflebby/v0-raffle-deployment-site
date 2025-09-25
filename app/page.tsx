@@ -1,3 +1,5 @@
+"use client"
+
 import { Header } from "@/components/header"
 import { RaffleFeed } from "@/components/raffle-feed"
 import { MetricsSidebar } from "@/components/metrics-sidebar"
@@ -9,15 +11,15 @@ export default function HomePage() {
       <Header />
       <RaffleEntryNotification />
 
-      <main className="container mx-auto px-4 py-6 sm:py-8">
+      <main className="container mx-auto px-4 py-4 sm:py-6">
         <div className="flex gap-6">
           <div className="flex-1">
-            <div className="mb-6 sm:mb-8 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-orbitron font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4 animate-pulse">
+            <div className="mb-4 border-b border-border/30 pb-3">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-[#3FC1C9] via-[#364F6B] to-[#3FC1C9] bg-clip-text text-transparent mb-2">
                 Cross-Chain Raffles
               </h1>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Discover and participate in raffles across Solana, Avalanche, and Ethereum
+              <p className="text-sm text-muted-foreground">
+                Discover and participate in raffles across multiple blockchains
               </p>
             </div>
 

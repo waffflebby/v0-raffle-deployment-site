@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { RaffleCard } from "./raffle-card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Search, TrendingUp, Clock, Zap } from "lucide-react"
+import { Search, TrendingUp, Clock, Zap, Globe, Filter } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 // Mock data for raffles
@@ -195,48 +195,67 @@ export function RaffleFeed() {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 items-start">
-        {/* Chain Filter - Mobile optimized */}
-        <div className="flex items-center space-x-1 bg-muted/30 rounded-xl p-1 w-full sm:w-auto overflow-x-auto">
-          {filterOptions.map((option) => (
-            <Button
-              key={option.value}
-              variant="ghost"
-              size="sm"
-              onClick={() => setSelectedChain(option.value)}
-              className={`px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
-                selectedChain === option.value
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "hover:bg-muted/50 text-muted-foreground"
-              }`}
-            >
-              {option.label}
-            </Button>
-          ))}
+      <div className="space-y-4">
+        {/* Chain Filter Section */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-muted-foreground" />
+            <h3 className="text-base font-semibold text-foreground">Filter by Chain</h3>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {filterOptions.map((option) => (
+              <Button
+                key={option.value}
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedChain(option.value)}
+                className={`px-6 py-2.5 rounded-lg transition-all border-2 font-medium ${
+                  selectedChain === option.value
+                    ? option.value === "all"
+                      ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg border-primary/30"
+                      : "bg-primary text-primary-foreground shadow-md border-primary"
+                    : "hover:bg-muted/70 text-muted-foreground border-border/50 hover:border-border"
+                }`}
+              >
+                {option.value === "all" && selectedChain === "all" && <Globe className="w-4 h-4 mr-2" />}
+                {option.label}
+                {selectedChain === option.value && option.value !== "all" && (
+                  <div className="w-2 h-2 bg-white rounded-full ml-2" />
+                )}
+              </Button>
+            ))}
+          </div>
         </div>
 
-        {/* Sort Options - Mobile optimized */}
-        <div className="flex items-center space-x-2 overflow-x-auto w-full sm:w-auto">
-          {sortOptions.map((option) => (
-            <Button
-              key={option.value}
-              variant={sortBy === option.value ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setSortBy(option.value)}
-              className={`px-3 py-2 whitespace-nowrap ${sortBy === option.value ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              <option.icon className="w-3 h-3 mr-1" />
-              {option.label}
-            </Button>
-          ))}
+        {/* Sort Options Section - Smaller styling */}
+        <div className="space-y-2">
+          <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Sort by</h4>
+          <div className="flex flex-wrap gap-2">
+            {sortOptions.map((option) => (
+              <Button
+                key={option.value}
+                variant={sortBy === option.value ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setSortBy(option.value)}
+                className={`px-3 py-1.5 rounded-md transition-all text-xs font-medium ${
+                  sortBy === option.value
+                    ? "bg-secondary/20 text-secondary-foreground border border-secondary/30"
+                    : "hover:bg-muted/50 text-muted-foreground"
+                }`}
+              >
+                <option.icon className="w-3 h-3 mr-1.5" />
+                {option.label}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Results Count */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-2 border-t border-border/30">
         <p className="text-sm text-muted-foreground">Showing {sortedRaffles.length} raffles</p>
         <div className="flex items-center space-x-2">
-          <Badge variant="secondary" className="bg-accent/20 text-accent-foreground">
+          <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">
             {sortedRaffles.filter((r) => r.isLive).length} Live
           </Badge>
         </div>
