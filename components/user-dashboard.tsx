@@ -245,6 +245,22 @@ function CreatedRaffleCard({
 export function UserDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
 
+  const userProfile = {
+    username: "CryptoTrader_2024",
+    walletAddress: "0x742d35a8f3a",
+    joinedDate: "December 2023",
+    avatar: "CT",
+    bio: "Passionate crypto enthusiast and raffle strategist",
+    location: "Global",
+    totalPortfolio: "18.905",
+    favoriteChain: "ETH",
+    achievements: ["Early Adopter", "Lucky Winner", "Active Trader"],
+    socialLinks: {
+      twitter: "@cryptotrader2024",
+      discord: "CryptoTrader#2024",
+    },
+  }
+
   // Mock user data
   const userStats = {
     totalEntered: 24,
@@ -340,10 +356,20 @@ export function UserDashboard() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-            <p className="text-muted-foreground">Track your raffles and manage your activity</p>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg">
+              {userProfile.avatar}
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-1">{userProfile.username}</h1>
+              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                <span>📍 {userProfile.location}</span>
+                <span>📅 Joined {userProfile.joinedDate}</span>
+                <span>💎 Portfolio: ${userProfile.totalPortfolio}</span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">{userProfile.bio}</p>
+            </div>
           </div>
           <div className="flex items-center space-x-3">
             <Button variant="outline">
@@ -356,6 +382,32 @@ export function UserDashboard() {
                 Create Raffle
               </Button>
             </Link>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg border border-primary/10">
+          <div className="flex items-center space-x-6">
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Achievements</p>
+              <div className="flex items-center space-x-2">
+                {userProfile.achievements.map((achievement, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {achievement}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Social</p>
+              <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+                <span>🐦 {userProfile.socialLinks.twitter}</span>
+                <span>💬 {userProfile.socialLinks.discord}</span>
+              </div>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Wallet</p>
+            <p className="text-sm font-mono text-foreground">{userProfile.walletAddress}</p>
           </div>
         </div>
 
@@ -429,11 +481,121 @@ export function UserDashboard() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+        <TabsList className="grid w-full grid-cols-4 mb-8">
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="entered">Entered Raffles</TabsTrigger>
           <TabsTrigger value="created">Created Raffles</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="profile" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Profile Information */}
+            <div className="lg:col-span-2 space-y-6">
+              <Card className="p-6 floating-card">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Profile Information</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Username</label>
+                      <p className="text-foreground font-medium">{userProfile.username}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Wallet Address</label>
+                      <p className="text-foreground font-mono text-sm">{userProfile.walletAddress}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Bio</label>
+                    <p className="text-foreground">{userProfile.bio}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Location</label>
+                      <p className="text-foreground">{userProfile.location}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Favorite Chain</label>
+                      <p className="text-foreground">{userProfile.favoriteChain}</p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6 floating-card">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Portfolio Breakdown</h3>
+                <div className="space-y-4">
+                  {[
+                    { chain: "Ethereum", symbol: "ETH", amount: "8.245", value: "$12,450", percentage: 66 },
+                    { chain: "Solana", symbol: "SOL", amount: "6.420", value: "$4,280", percentage: 23 },
+                    { chain: "Avalanche", symbol: "AVAX", amount: "4.240", value: "$2,175", percentage: 11 },
+                  ].map((asset) => (
+                    <div key={asset.symbol} className="flex items-center justify-between p-3 bg-secondary/5 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                            asset.symbol === "ETH"
+                              ? "bg-blue-500"
+                              : asset.symbol === "SOL"
+                                ? "bg-purple-500"
+                                : "bg-red-500"
+                          }`}
+                        >
+                          {asset.symbol === "ETH" ? "Ξ" : asset.symbol === "SOL" ? "◎" : "▲"}
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">{asset.chain}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {asset.amount} {asset.symbol}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-foreground">{asset.value}</p>
+                        <p className="text-sm text-muted-foreground">{asset.percentage}%</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            {/* Profile Stats */}
+            <div className="space-y-6">
+              <Card className="p-6 floating-card">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Achievements</h3>
+                <div className="space-y-3">
+                  {userProfile.achievements.map((achievement, index) => (
+                    <div key={index} className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <Award className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="font-medium text-foreground">{achievement}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="p-6 floating-card">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Social Links</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-secondary/5 rounded-lg">
+                    <div className="w-8 h-8 bg-blue-500/10 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 text-sm">🐦</span>
+                    </div>
+                    <span className="text-foreground">{userProfile.socialLinks.twitter}</span>
+                  </div>
+                  <div className="flex items-center space-x-3 p-3 bg-secondary/5 rounded-lg">
+                    <div className="w-8 h-8 bg-purple-500/10 rounded-full flex items-center justify-center">
+                      <span className="text-purple-600 text-sm">💬</span>
+                    </div>
+                    <span className="text-foreground">{userProfile.socialLinks.discord}</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
 
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
